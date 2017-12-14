@@ -39,6 +39,17 @@ def part1(f):
         c += b.count('1')
     return c
         
+def findregion(mem,loc,num):
+	mem[loc[1]][loc[0]] = num
+	if loc[1] > 0 and mem[loc[1]-1][loc[0]] == 1:
+		findregion(mem,(loc[1]-1,loc[0]),num)
+	if loc[1] < 127 and mem[loc[1]+1][loc[0]] == 1:
+		findregion(mem,(loc[1]+1,loc[0]),num)
+	if loc[1] > 0 and mem[loc[1]-1][loc[0]] == 1:
+		findregion(mem,(loc[1]-1,loc[0]),num)
+	if loc[1] > 0 and mem[loc[1]-1][loc[0]] == 1:
+		findregion(mem,(loc[1]-1,loc[0]),num)
+
 
 def part2(f):
     mem = []
