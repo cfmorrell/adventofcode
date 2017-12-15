@@ -38,5 +38,5 @@ def part2(start):
 
 teststart = (65,8921)
 realstart = (512,191)
-# print(part1(realstart))
-print(part2(realstart))
+print(part1(realstart))
+#print(part2(realstart))
