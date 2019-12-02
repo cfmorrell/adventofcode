@@ -1,3 +1,5 @@
+import sys
+
 def func(filename):
 	"""
 	>>> func("test1.txt")
@@ -37,13 +39,7 @@ def func(filename):
 				return((noun,verb))
 				
 
-import sys
-import doctest
-
-try:
+if __name__ == "__main__":
 	filename = str(sys.argv[1])
 	n,v = func(filename)
 	print(n,v,(100 * n + v))
-except:
-	print("testing")
-	doctest.testmod()
