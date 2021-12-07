@@ -12,37 +12,31 @@ def part1(numbers):
 
 def part2(numbers):
     d = {}
-    end = 10
-    for i,v in enumerate(numbers):
-        if v in d:
-            d[v].append(i)
+    end = 30000000
+    for i,v in enumerate(numbers[:-1]):
+        d[v] = i+1
+    lastpair = (len(numbers),numbers[-1])
+    for turnnumber in range(len(numbers)+1,end+1):
+        # print("Turn #{}, looking for {} in {}".format(turnnumber,lastpair[1],d))
+        lastseen = d.get(lastpair[1])
+        if lastseen == None:
+            diff = 0
+            thispair = (turnnumber,diff)
+            # print("Didn't find {}, adding 0 to dictionary next turn".format(lastpair[1]))
         else:
-            d[v] = [i]
-    lastval = numbers.pop()
-    print(d)
-    for i in range(len(numbers),end):
-        print("Looking for",lastval)
-        if lastval not in d or max(d[lastval]) == i-1:
-            print("Value not found")
-            if 0 in d:
-                d[0].append(i)
-            else:
-                d[0] = [i]
-            lastval = 0
-        else:
-            lastoccurence = max(d[lastval])
-            print("last occurence",lastoccurence)
-            diff = i - lastoccurence
-            print("Distance is",diff)
-            if diff in d:
-                d[diff].append(i)
-            else:
-                d[diff] = [i]
-            lastval = diff
-        print(lastval,d)
+            diff = turnnumber - lastseen - 1
+            thispair = (turnnumber,diff)
+            # print("Found {} on previous turn {}, adding {} to dictionary next turn".format(lastpair[1],d[lastpair[1]],diff))
+        d[lastpair[1]] = lastpair[0]
+        lastpair = thispair
+    print(thispair,len(d))
 
+#I struggled with doing this in constant space.  The 3000000 element list wasn't going to work, so a 
+#dictionary that only maintained the last time a number was seen got me there.
 
 
 #part1([0,12,6,13,20,1,17])
 #part1([0,3,6])
-part2([0,3,6])
+# part2([0,3,6])
+# part2([3,1,2])
+part2([0,12,6,13,20,1,17])
