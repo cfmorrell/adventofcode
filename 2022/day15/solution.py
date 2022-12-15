@@ -24,38 +24,26 @@ def part1():
             row[sx-(mandist-disttorow):sx+(mandist-disttorow)+1] = [1]*(((mandist-disttorow)*2)+1)
         print(sum(row)-len(beaconsinrow))
 
+
 #https://www.geeksforgeeks.org/merging-intervals/
-def mergeIntervals(arr):
-    # Sorting based on the increasing order
-    # of the start intervals
+def mergeIntervals(rows,row):
+    arr = rows[row]
     arr.sort(key=lambda x: x[0])
-    # Stores index of last element
-    # in output array (modified arr[])
     index = 0
-    # Traverse all input Intervals starting from
-    # second interval
     for i in range(1, len(arr)):
-        # If this is not first Interval and overlaps
-        # with the previous one, Merge previous and
-        # current Intervals
         if (arr[index][1] >= arr[i][0]-1):
             arr[index][1] = max(arr[index][1], arr[i][1])
         else:
             index = index + 1
             arr[index] = arr[i]
- 
-    newarr = [arr[i] for i in range(index+1)]
-    # print("The Merged Intervals are :", end=" ")
-    # for i in range(index+1):
-    #     print(arr[i], end=" ")
-    # print()
-    # print("Merged (my version):",newarr)
-    return newarr
+    rows[row] = [arr[i] for i in range(index+1)][::]
 
+
+global rows
 
 def part2():
     maxsize = 4000001
-    rows = [[] for _ in range(maxsize)] #np.zeros((maxsize,maxsize),dtype='uint8')
+    rows = [[] for _ in range(maxsize)]
     # print(rows)
     with open(filename) as f:
         for line in f:
@@ -68,28 +56,28 @@ def part2():
             mandist = cityblock([sx,sy],[bx,by])
             top = max(sy-mandist,0)
             bottom = min(sy+mandist+1,maxsize)
-            # print('Edit Rows {} to {}'.format(top,bottom))
             for row in range(top,bottom):
-                # print('Working on row',row)
                 disttorow = abs(sy-row)
                 left = max(0,sx-(mandist-disttorow))
                 right = min(maxsize,sx+(mandist-disttorow))
-                # print('Before:',rows[row])
-                # print('Adding:',left,right)
                 rows[row].append([left,right])
-                rows[row] = mergeIntervals(rows[row])[::]
-                # print('After:',rows[row])
+    for row in range(len(rows)):
+        mergeIntervals(rows,row)
+        if len(rows[row]) > 1:
+            y = row
+            x = rows[row][0][1] + 1
+            break
+    print((4000000*x)+y)        
 
             # for r in rows:
             #     print(r)
                     # print(''.join([str(i) for i in r]))
-            # time.sleep(0.5)
-    for i,r in enumerate(rows):
-        if len(r) > 1:
-            y = i
-            x = r[0][1] + 1
-            break
-    print((4000000*x)+y)
+    # for i,r in enumerate(rows):
+    #     if len(r) > 1:
+    #         y = i
+    #         x = r[0][1] + 1
+    #         break
+    # print((4000000*x)+y)
     
 
 
