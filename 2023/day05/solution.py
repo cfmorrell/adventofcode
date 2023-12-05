@@ -16,10 +16,14 @@ def part1():
 def part2():
     with open(filename) as f:
         seedranges = [int(i) for i in f.readline().strip().split(': ')[1].split()]
-        seeds = list(range(seedranges[0],seedranges[0] + seedranges[1]))
-        seeds.extend(list(range(seedranges[2],seedranges[2] + seedranges[3])))
+        seeds = []
+        for i in range(0,len(seedranges),2):
+            seeds.extend(list(range(seedranges[i],seedranges[i] + seedranges[i+1])))
+        # seeds = list(range(seedranges[0],seedranges[0] + seedranges[1]))
+        # seeds.extend(list(range(seedranges[2],seedranges[2] + seedranges[3])))
+        # print(seeds)
         print('Number of seeds:',len(seeds))
-
+        quit()
 
         transforms = [i.strip().split('\n')[1:] for i in f.read().strip().split('\n\n')]
         for transform in transforms:
