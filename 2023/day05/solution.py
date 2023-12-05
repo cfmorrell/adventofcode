@@ -32,6 +32,9 @@ def part2():
                         newseeds[index] = deststart + seed - sourcerange[0]
             seeds = newseeds[::]
             print('Transform Complete')
+            end = time.perf_counter()
+            ms = (end-start)# * 10**6
+            print(f"Elapsed {ms:.03f} seconds.")
         print(min(seeds))
 
 
