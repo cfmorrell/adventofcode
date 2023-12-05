@@ -1,11 +1,38 @@
 def part1():
     with open(filename) as f:
-        pass
+        seeds = [int(i) for i in f.readline().strip().split(': ')[1].split()]
+        transforms = [i.strip().split('\n')[1:] for i in f.read().strip().split('\n\n')]
+        for transform in transforms:
+            newseeds = seeds[::]
+            for conversion in transform:
+                deststart,sourcestart,rangelength = [int(i) for i in conversion.split()]
+                sourcerange = (sourcestart, sourcestart + rangelength - 1)
+                for index,seed in enumerate(seeds):
+                    if sourcerange[0] <= seed <= sourcerange[1]:
+                        newseeds[index] = deststart + seed - sourcerange[0]
+            seeds = newseeds[::]
+        print(min(seeds))
 
 def part2():
     with open(filename) as f:
-        pass
+        seedranges = [int(i) for i in f.readline().strip().split(': ')[1].split()]
+        seeds = list(range(seedranges[0],seedranges[0] + seedranges[1]))
+        seeds.extend(list(range(seedranges[2],seedranges[2] + seedranges[3])))
+        print('Number of seeds:',len(seeds))
 
+
+        transforms = [i.strip().split('\n')[1:] for i in f.read().strip().split('\n\n')]
+        for transform in transforms:
+            newseeds = seeds[::]
+            for conversion in transform:
+                deststart,sourcestart,rangelength = [int(i) for i in conversion.split()]
+                sourcerange = (sourcestart, sourcestart + rangelength - 1)
+                for index,seed in enumerate(seeds):
+                    if sourcerange[0] <= seed <= sourcerange[1]:
+                        newseeds[index] = deststart + seed - sourcerange[0]
+            seeds = newseeds[::]
+            print('Transform Complete')
+        print(min(seeds))
 
 
 
