@@ -23,7 +23,10 @@ def part2():
         # seeds.extend(list(range(seedranges[2],seedranges[2] + seedranges[3])))
         # print(seeds)
         print('Number of seeds:',len(seeds))
-        quit()
+        end = time.perf_counter()
+        ms = (end-start)# * 10**6
+        print(f"Elapsed {ms:.03f} seconds.")
+        # quit()
 
         transforms = [i.strip().split('\n')[1:] for i in f.read().strip().split('\n\n')]
         for transform in transforms:
