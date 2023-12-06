@@ -13,36 +13,44 @@ def part1():
             seeds = newseeds[::]
         print(min(seeds))
 
+import cupy as cp
+import numpy as np
 def part2():
     with open(filename) as f:
         seedranges = [int(i) for i in f.readline().strip().split(': ')[1].split()]
-        seeds = []
+        print(seedranges)
+        seeds = cp.array([])
         for i in range(0,len(seedranges),2):
-            seeds.extend(list(range(seedranges[i],seedranges[i] + seedranges[i+1])))
+            print('I:',i)
+            print(seeds)
+            temp = cp.arange(seedranges[i],seedranges[i] + seedranges[i+1])
+            print(temp)
+            cp.concatenate(seeds,temp))
         # seeds = list(range(seedranges[0],seedranges[0] + seedranges[1]))
         # seeds.extend(list(range(seedranges[2],seedranges[2] + seedranges[3])))
-        # print(seeds)
+        print(seeds)
         print('Number of seeds:',len(seeds))
         end = time.perf_counter()
         ms = (end-start)# * 10**6
         print(f"Elapsed {ms:.03f} seconds.")
-        # quit()
 
         transforms = [i.strip().split('\n')[1:] for i in f.read().strip().split('\n\n')]
         for transform in transforms:
-            newseeds = seeds[::]
+            newseeds = cp.copy(seeds)
             for conversion in transform:
                 deststart,sourcestart,rangelength = [int(i) for i in conversion.split()]
                 sourcerange = (sourcestart, sourcestart + rangelength - 1)
-                for index,seed in enumerate(seeds):
-                    if sourcerange[0] <= seed <= sourcerange[1]:
-                        newseeds[index] = deststart + seed - sourcerange[0]
-            seeds = newseeds[::]
+                for index in range(len(seeds)):
+                # for seed in np.nditer(seeds, op_flags=['readonly']):
+                    if sourcerange[0] <= seeds[index] <= sourcerange[1]:
+                        newseeds[index] = deststart + seeds[index] - sourcerange[0]
+            print(newseeds)
+            seeds = cp.copy(newseeds)
             print('Transform Complete')
             end = time.perf_counter()
             ms = (end-start)# * 10**6
             print(f"Elapsed {ms:.03f} seconds.")
-        print(min(seeds))
+        print(cp.min(seeds))
 
 
 
