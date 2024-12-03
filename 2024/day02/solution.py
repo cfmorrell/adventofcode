@@ -1,14 +1,54 @@
 def part1():
+    counter = 0
     with open(filename) as f:
-        pass
+        for line in f:
+            report = [int(i) for i in line.strip().split()]
+            safe = True
+            if sorted(report) != report and list(reversed(sorted(report))) != report:
+                safe = False
+            if safe:
+                for index,item in enumerate(report):
+                    if report.count(item) > 1:
+                        safe = False
+                    if index < len(report) - 1:
+                        if abs(item - report[index + 1]) > 3:
+                            safe = False
+            if safe:
+                counter += 1
+    print(counter)
+
+def checkifsafe(report):
+    # print(report)
+    safe = True
+    if sorted(report) != report and list(reversed(sorted(report))) != report:
+        safe = False
+    if safe:
+        for index,item in enumerate(report):
+            if report.count(item) > 1:
+                safe = False
+            if index < len(report) - 1:
+                if abs(item - report[index + 1]) > 3:
+                    safe = False
+    return safe
 
 def part2():
+    counter = 0
     with open(filename) as f:
-        pass
+        for line in f:
+            report = [int(i) for i in line.strip().split()]
+            safe = False
+            if not checkifsafe(report):
+                for i in range(len(report)):
+                    if checkifsafe(report[:i]+report[i+1:]):
+                        safe = True
+            else:
+                safe = True
+            if safe:
+                counter += 1
+        print(counter)
 
 
-
-
+    print(counter)
 
 
 
