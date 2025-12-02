@@ -1,10 +1,57 @@
 def part1():
     with open(filename) as f:
-        pass
+        content = f.read()
+    rules,updates = content.split('\n\n')
+    rules = [[int(i) for i in rule.split('|')] for rule in rules.split()]
+    updates = [[int(i) for i in update.split(',')] for update in updates.split()]
+    total = 0
+    for update in updates:
+        badupdate = False
+        for rule in rules:
+            if rule[0] in update and rule[1] in update:
+                if update.index(rule[0]) >= update.index(rule[1]):
+                    badupdate = True
+                    break
+        if not badupdate:
+            total += update[len(update)//2]
+    print(total)
+
+def checkbadupdate(update,rules):
+    for rule in rules:
+        if rule[0] in update and rule[1] in update:
+            if update.index(rule[0]) >= update.index(rule[1]):
+                return True
+    return False
+
 
 def part2():
     with open(filename) as f:
-        pass
+        content = f.read()
+    rules,updates = content.split('\n\n')
+    rules = [[int(i) for i in rule.split('|')] for rule in rules.split()]
+    updates = [[int(i) for i in update.split(',')] for update in updates.split()]
+    badupdates = []
+    for update in updates:
+        badupdate = checkbadupdate(update,rules)
+        if badupdate:
+            badupdates.append(update)
+    total = 0
+    for badupdate in badupdates:
+        print(badupdate)
+        stillBad = True
+        while stillBad:
+            print('anotherlap')
+            stillBad = False
+            for rule in rules:
+                # print(rule)
+                if rule[0] in badupdate and rule[1] in badupdate:
+                    if badupdate.index(rule[0]) >= badupdate.index(rule[1]):
+                     
+                        badupdate.insert(badupdate.index(rule[0]),badupdate.pop(badupdate.index(rule[1])))
+                        stillBad = True
+        print('Fixed',badupdate)
+        total += badupdate[len(badupdate)//2]
+    print(total)
 
 
 
